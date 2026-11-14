@@ -4,9 +4,10 @@ When Claude suggests a command in the chat (a short shell block, or inline code 
 known tool such as `npm`, `git` or `flutter`), a button under the reply runs it, so you do not copy it
 into a terminal yourself.
 
-The command runs in an idle terminal of the same project: one whose shell is open and running
-nothing. When there is none, a new terminal tab opens beside the chat. Commands that delete files,
-discard work, deploy or build a release ask before they run.
+The first command opens a terminal tab of its own beside the chat, in the folder Claude runs in. Later
+ones run in that same terminal while it is idle, or in a new one when it is busy or closed. Your own
+terminals are never typed into: one that looks idle may have just started something. Commands that
+delete files, discard work, deploy or build a release ask before they run.
 
 Up to four commands per reply get a button. A command with a placeholder in it (`<path>`, `...`) is a
 template, not something to run, and gets none.
