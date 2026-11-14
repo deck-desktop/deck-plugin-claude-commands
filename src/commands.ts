@@ -1,11 +1,11 @@
 // Finds the shell commands a reply offers to run. Pure, so commands.check.mjs calls it directly.
 
-const MAX = 4;
 const SHELL_LANGS = new Set(["", "bash", "sh", "shell", "console", "powershell", "ps1", "pwsh", "cmd", "bat"]);
 // Inline `code` counts as a command only when it starts with one of these.
 const INLINE_START = /^(flutter|dart|npm|npx|pnpm|yarn|git|adb|cargo|claude|node|python|pip|docker|ssh|cd|ls|cat)\s/;
 
-export function extractCommands(markdown: string): string[] {
+/** `max`: at most this many; `inline`: inline code counts too, not only fenced blocks. */
+export function extractCommands(markdown: string, { max = 4, inline = true }: { max?: number; inline?: boolean } = {}): string[] {
   const found: string[] = [];
   const add = (cmd: string) => {
     const c = cmd.trim();
@@ -24,12 +24,11 @@ export function extractCommands(markdown: string): string[] {
   }
 
   // Inline code that starts with a known command, outside the fenced blocks.
-  const prose = markdown.replace(fence, "");
-  for (const inline of prose.matchAll(/`([^`\n]+)`/g)) {
-    const code = inline[1] ?? "";
-    if (INLINE_START.test(code)) add(code);
+  const prose = inline ? markdown.replace(fence, "") : "";
+  for (const code of prose.matchAll(/`([^`\n]+)`/g)) {
+    if (INLINE_START.test(code[1] ?? "")) add(code[1] ?? "");
   }
-  return found.slice(0, MAX);
+  return found.slice(0, max);
 }
 
 // Commands that discard work, delete, deploy or build a release ask before running.

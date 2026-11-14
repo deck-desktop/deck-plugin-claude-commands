@@ -14,6 +14,10 @@ assert.deepEqual(c.extractCommands("```ts\nconst a = 1\n```\n```sh\na\nb\nc\nd\n
 assert.deepEqual(c.extractCommands("`git status` `git status`"), ["git status"]);
 assert.equal(c.extractCommands("`npm a` `npm b` `npm c` `npm d` `npm e`").length, 4);
 
+// The settings: fewer buttons, and fenced blocks only.
+assert.deepEqual(c.extractCommands("`npm a` `npm b` `npm c`", { max: 2 }), ["npm a", "npm b"]);
+assert.deepEqual(c.extractCommands("```sh\nnpm test\n```\nthen `git status`", { inline: false }), ["npm test"]);
+
 // What deletes, discards or deploys asks first; the rest runs.
 for (const risky of ["git reset --hard", "rm -rf build", "git checkout -- src", "ssh vps docker ps", "npm run tauri build", "git stash"]) {
   assert.ok(c.isRisky(risky), risky);

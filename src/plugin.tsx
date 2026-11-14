@@ -6,6 +6,10 @@ import { ChatChip, ConfirmDialog, notify, type ConfirmState } from "deck-plugin-
 import { mutateLayout, openTabInWorkspace, paneLabel, paneLines, paneLocation, queueInput, runningIn, sendInput } from "deck-plugin-sdk/terminals";
 import { getChat } from "deck-plugin-sdk/chat";
 import { extractCommands, isRisky } from "./commands";
+import { useSettings } from "./settings";
+
+// Its settings, drawn by Deck on its page of Settings; dispose stops their listener before a reload.
+export { dispose, settings } from "./settings";
 
 /** The terminals this plugin opened, by the chat they run for: reused while their shell is idle.
  *  Only its own: a terminal of the user's that looks idle may have started something seconds ago
@@ -42,11 +46,12 @@ async function run(chatPane: string, cwd: string, cmd: string) {
 
 export function ChatReply({ pane, message }: { pane: string; message: { text: string } }) {
   const [confirm, setConfirm] = useState<ConfirmState | null>(null);
-  const cmds = extractCommands(message.text);
+  const cfg = useSettings();
+  const cmds = extractCommands(message.text, { max: Number(cfg.max), inline: cfg.inline });
   if (!cmds.length) return null;
   const press = (cmd: string) => {
     const go = () => void run(pane, getChat(pane).cwd, cmd).catch((e) => console.warn("[run-buttons] running failed", e));
-    if (!isRisky(cmd)) return go();
+    if (cfg.ask === "never" || (cfg.ask === "risky" && !isRisky(cmd))) return go();
     setConfirm({ title: "Run this command?", body: <code className="whitespace-pre-wrap break-all text-[12px]">{cmd}</code>, confirmLabel: "Run", onConfirm: go });
   };
   return (
