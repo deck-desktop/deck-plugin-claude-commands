@@ -2,7 +2,7 @@
   "id": "claude-commands",
   "name": "Claude commands",
   "description": "A button under Claude's replies for each command they suggest, run in a terminal of its own beside the chat.",
-  "icon": "Play",
+  "icon": "icon.svg",
   "color": "#4ade80",
   "version": "0.1.0",
   "minDeck": "1.17.4",
