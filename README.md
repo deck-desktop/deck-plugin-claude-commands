@@ -1,4 +1,4 @@
-# Run buttons
+# Claude commands
 
 When Claude suggests a command in the chat (a short shell block, or inline code that starts with a
 known tool such as `npm`, `git` or `flutter`), a button under the reply runs it, so you do not copy it

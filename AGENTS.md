@@ -1,4 +1,4 @@
-# Run buttons: notes for AI agents
+# Claude commands: notes for AI agents
 
 This is a plugin for Deck, a Windows app (Tauri, React 19). It is
 bundled into one `plugin.js` that Deck imports at run time, inside Deck's own window. Read this
@@ -73,7 +73,7 @@ survive the tab closing), `Bar`, and `dispose`. At least one; none is required o
   `bg-elev`, `border-subtle`, `var(--accent)`) and Deck's components from `deck-plugin-sdk/ui`, so
   the plugin follows the user's theme.
 - **No error is dropped silently.** A failed save, load or action logs
-  `console.warn("[run-buttons] what failed", e)`.
+  `console.warn("[claude-commands] what failed", e)`.
 
 ## More
 

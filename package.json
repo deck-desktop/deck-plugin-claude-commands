@@ -1,5 +1,5 @@
 {
-  "name": "deck-plugin-run-buttons",
+  "name": "deck-plugin-claude-commands",
   "version": "0.1.0",
   "private": true,
   "type": "module",

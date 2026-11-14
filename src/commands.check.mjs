@@ -24,4 +24,4 @@ for (const risky of ["git reset --hard", "rm -rf build", "git checkout -- src", 
 }
 for (const safe of ["npm test", "git status", "flutter run", "git checkout dev"]) assert.ok(!c.isRisky(safe), safe);
 
-console.log("run-buttons: all checks passed");
+console.log("claude-commands: all checks passed");
